@@ -386,7 +386,6 @@ public:
 
 		} canvas_item;
 
-		/*
 		struct Spatial {
 
 			enum BlendMode {
@@ -423,6 +422,7 @@ public:
 			bool uses_discard;
 			bool uses_sss;
 			bool uses_screen_texture;
+			bool uses_depth_texture;
 			bool uses_time;
 			bool writes_modelview_or_projection;
 			bool uses_vertex_lighting;
@@ -433,7 +433,6 @@ public:
 		struct Particles {
 
 		} particles;
-		*/
 
 		bool uses_vertex_time;
 		bool uses_fragment_time;
@@ -502,6 +501,10 @@ public:
 
 	mutable SelfList<Material>::List _material_dirty_list;
 	void _material_make_dirty(Material *p_material) const;
+
+	void _material_add_geometry(RID p_material, Geometry *p_geometry);
+	void _material_remove_geometry(RID p_material, Geometry *p_geometry);
+
 	void _update_material(Material *p_material);
 
 	mutable RID_Owner<Material> material_owner;
@@ -574,6 +577,9 @@ public:
 		Vector<bool> skeleton_bone_used;
 
 		bool active;
+
+		PoolVector<uint8_t> data;
+		PoolVector<uint8_t> index_data;
 
 		int total_data_size;
 
