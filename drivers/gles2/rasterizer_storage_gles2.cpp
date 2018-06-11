@@ -3273,8 +3273,6 @@ void RasterizerStorageGLES2::initialize() {
 	config.s3tc_supported = config.extensions.has("GL_EXT_texture_compression_s3tc");
 	config.etc1_supported = config.extensions.has("GL_OES_compressed_ETC1_RGB8_texture");
 
-	print_line(config.float_texture_supported ? "float true" : "float false");
-
 	frame.count = 0;
 	frame.prev_tick = 0;
 	frame.delta = 0;
@@ -3412,6 +3410,11 @@ void RasterizerStorageGLES2::initialize() {
 }
 
 void RasterizerStorageGLES2::finalize() {
+}
+
+void RasterizerStorageGLES2::_copy_screen() {
+	bind_quad_array();
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
 void RasterizerStorageGLES2::update_dirty_resources() {
