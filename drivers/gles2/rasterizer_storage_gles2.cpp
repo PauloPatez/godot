@@ -2138,6 +2138,12 @@ void RasterizerStorageGLES2::multimesh_allocate(RID p_multimesh, int p_instances
 		return;
 	}
 
+	multimesh->size = p_instances;
+
+	multimesh->color_format = p_color_format;
+	multimesh->transform_format = p_transform_format;
+	multimesh->custom_data_format = p_data;
+
 	if (multimesh->size) {
 		multimesh->data.resize(0);
 	}
@@ -3701,8 +3707,8 @@ VS::InstanceType RasterizerStorageGLES2::get_base_type(RID p_rid) const {
 	if (light_owner.owns(p_rid)) {
 		return VS::INSTANCE_LIGHT;
 	}
-	if (mesh_owner.owns(p_rid)) {
-		VS::INSTANCE_MESH;
+	if (multimesh_owner.owns(p_rid)) {
+		return VS::INSTANCE_MULTIMESH;
 	}
 
 	return VS::INSTANCE_NONE;
