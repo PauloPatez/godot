@@ -57,7 +57,7 @@ static void glTexStorage2DCustom(GLenum target, GLsizei levels, GLenum internalf
 	}
 
 #else
-	//glTexStorage2D(target, levels, internalformat, width, height);
+	glTexStorage2D(target, levels, internalformat, width, height);
 #endif
 }
 
@@ -542,8 +542,8 @@ void RasterizerStorageGLES2::texture_set_data(RID p_texture, const Ref<Image> &p
 		//generate mipmaps if they were requested and the image does not contain them
 		glGenerateMipmap(texture->target);
 	} else if (mipmaps > 1) {
-		//glTexParameteri(texture->target, GL_TEXTURE_BASE_LEVEL, 0);
-		//glTexParameteri(texture->target, GL_TEXTURE_MAX_LEVEL, mipmaps - 1);
+		glTexParameteri(texture->target, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(texture->target, GL_TEXTURE_MAX_LEVEL, mipmaps - 1);
 	}
 
 	texture->mipmaps = mipmaps;
@@ -899,8 +899,8 @@ void RasterizerStorageGLES2::sky_set_texture(RID p_sky, RID p_panorama, int p_ra
 			size >>= 1;
 	}
 
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, lod - 1);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, lod - 1);
 
 	lod = 0;
 	mm_level = mipmaps;
@@ -932,8 +932,8 @@ void RasterizerStorageGLES2::sky_set_texture(RID p_sky, RID p_panorama, int p_ra
 
 	// restore ranges
 
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
-	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, lod - 1);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, lod - 1);
 
 	glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -1629,7 +1629,7 @@ void RasterizerStorageGLES2::mesh_add_surface(RID p_mesh, uint32_t p_format, VS:
 				}
 
 				if (p_format & VS::ARRAY_COMPRESS_VERTEX) {
-					//attribs[i].type = GL_HALF_FLOAT;
+					attribs[i].type = GL_HALF_FLOAT;
 					stride += attribs[i].size * 2;
 				} else {
 					attribs[i].type = GL_FLOAT;
@@ -1689,7 +1689,7 @@ void RasterizerStorageGLES2::mesh_add_surface(RID p_mesh, uint32_t p_format, VS:
 				attribs[i].size = 2;
 
 				if (p_format & VS::ARRAY_COMPRESS_TEX_UV) {
-					//attribs[i].type = GL_HALF_FLOAT;
+					attribs[i].type = GL_HALF_FLOAT;
 					stride += 4;
 				} else {
 					attribs[i].type = GL_FLOAT;
@@ -1704,7 +1704,7 @@ void RasterizerStorageGLES2::mesh_add_surface(RID p_mesh, uint32_t p_format, VS:
 				attribs[i].size = 2;
 
 				if (p_format & VS::ARRAY_COMPRESS_TEX_UV2) {
-					//attribs[i].type = GL_HALF_FLOAT;
+					attribs[i].type = GL_HALF_FLOAT;
 					stride += 4;
 				} else {
 					attribs[i].type = GL_FLOAT;
