@@ -203,7 +203,7 @@ void RasterizerGLES2::initialize() {
 
 #endif // GLAD_ENABLED
 
-	// For debugging
+		// For debugging
 #ifdef GLES_OVER_GL
 	if (GLAD_GL_ARB_debug_output) {
 		glDebugMessageControlARB(_EXT_DEBUG_SOURCE_API_ARB, _EXT_DEBUG_TYPE_ERROR_ARB, _EXT_DEBUG_SEVERITY_HIGH_ARB, 0, NULL, GL_TRUE);
@@ -378,10 +378,10 @@ void RasterizerGLES2::blit_render_target_to_screen(RID p_render_target, const Re
 	canvas->state.canvas_shader.set_conditional(CanvasShaderGLES2::USE_TEXTURE_RECT, true);
 	canvas->state.canvas_shader.set_conditional(CanvasShaderGLES2::USE_UV_ATTRIBUTE, false);
 
-	canvas->state.canvas_shader.set_custom_shader(0);
 	canvas->state.canvas_shader.bind();
 
 	canvas->canvas_begin();
+	canvas->state.canvas_shader.set_uniform(CanvasShaderGLES2::BLIT_PASS, true);
 	glDisable(GL_BLEND);
 	glBindFramebuffer(GL_FRAMEBUFFER, RasterizerStorageGLES2::system_fbo);
 	glActiveTexture(GL_TEXTURE0);
@@ -390,6 +390,8 @@ void RasterizerGLES2::blit_render_target_to_screen(RID p_render_target, const Re
 	// TODO normals
 
 	canvas->draw_generic_textured_rect(p_screen_rect, Rect2(0, 0, 1, -1));
+
+	canvas->state.canvas_shader.set_uniform(CanvasShaderGLES2::BLIT_PASS, false);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	canvas->canvas_end();
